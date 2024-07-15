@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface UsuarioDAO extends JpaRepository<UsuarioEntity, Integer> {
     Optional<UsuarioEntity> findByUsuario(String usuario);
+    UsuarioEntity findByUsuarioAndClave(String usuario, String clave);
 }
