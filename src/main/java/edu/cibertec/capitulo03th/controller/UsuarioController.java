@@ -6,6 +6,9 @@ import edu.cibertec.capitulo03th.service.UsuarioService;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -54,8 +57,8 @@ public class UsuarioController {
         if (resulta.hasErrors()) {
             mv = new ModelAndView("usuarioDatos", "usuarioBean", usuario);
         } else {
-        // La foto se recibe con otro nombre de parámetro para que pase la validación, ya que sino
-        // arroja el error por el tipo de dato (comparándolo con el del Entity)
+            // La foto se recibe con otro nombre de parámetro para que pase la validación, ya que sino
+            // arroja el error por el tipo de dato (comparándolo con el del Entity)
             usuario.setFoto(foto.getBytes());
             usuarioService.insertarUsuario(usuario);
             mv = new ModelAndView("usuarioLista", "lista", usuarioService.getListaUsuarios());
@@ -69,6 +72,22 @@ public class UsuarioController {
     @RequestMapping("usuarioListar")
     public ModelAndView usuarioListar() {
         return new ModelAndView("usuarioLista", "lista", usuarioService.getListaUsuarios());
+    }
+
+    @RequestMapping("usuarioListarPag")
+    public ModelAndView usuarioListarPag(@RequestParam("pag") int pag,
+                                         @RequestParam(value = "orden", required = false, defaultValue = "nombreCompleto") String orden) {
+        Pageable pagina = PageRequest.of(pag, 5);
+
+        if (orden == null || orden.equalsIgnoreCase("null")) {
+            pagina = PageRequest.of(pag, 5);
+        } else {
+            pagina = PageRequest.of(pag, 5, Sort.by(orden));
+        }
+
+        ModelAndView modelAndView = new ModelAndView("usuarioLista");
+        modelAndView.addObject("lista", usuarioService.getListaUsuarios(pagina));
+        return modelAndView;
     }
 
 //    @RequestMapping("usuarioMod")

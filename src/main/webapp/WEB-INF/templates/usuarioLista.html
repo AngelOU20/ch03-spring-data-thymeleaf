@@ -13,6 +13,7 @@
             padding: 0 2rem 0 0;
             margin-bottom: 0.1rem;
         }
+
         .table-container {
             margin-top: 20px;
             padding: 20px;
@@ -20,15 +21,18 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
         }
+
         .table > tbody {
             vertical-align: middle;
         }
+
         .avatar {
             width: 2.2rem;
             height: 2.2rem;
             border-radius: 50%;
             margin-right: 10px;
         }
+
         .status-badge {
             font-size: 0.7rem;
             font-weight: bold;
@@ -36,6 +40,7 @@
             border-radius: 20px;
             color: #036721;
         }
+
         .status-active {
             background-color: rgba(106, 255, 123, 0.5);
         }
@@ -81,8 +86,16 @@
             <thead>
             <tr>
                 <th>N°</th>
-                <th>Nombre Completo</th>
-                <th>Usuario</th>
+                <th>
+                    <a th:href="@{usuarioListarPag.do(pag=0, orden=nombreCompleto)}">
+                        Nombre Completo
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{usuarioListarPag.do(pag=0, orden=usuario)}">
+                        Usuario
+                    </a>
+                </th>
                 <th>Clave</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -93,7 +106,8 @@
                 <td th:text="${it.index + 1}"></td>
                 <td>
                     <img th:src="@{'data:image/jpeg;base64,' + ${user.fotoBase64}}"
-                         th:if="${user.fotoBase64 != null}" class="avatar" alt="Avatar" height="25" width="25"/>
+                         th:if="${user.fotoBase64 != null}" class="avatar" alt="Avatar"
+                         height="25" width="25"/>
 
                     <img th:if="${user.fotoBase64 == null}"
                          th:src="'https://via.placeholder.com/40'"
@@ -114,6 +128,34 @@
             </tr>
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+                       th:href="@{usuarioListarPag.do(pag=0,orden=${param.orden})}">
+                        1
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+                       th:href="@{usuarioListarPag.do(pag=1,orden=${param.orden})}">
+                        2
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </section>
 
